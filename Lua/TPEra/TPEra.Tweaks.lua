@@ -1,3 +1,4 @@
+-- SRB2TP - TPEra Tweaks, created by Barrels O' Fun, edited by MIDIMan
 
 local TP_NODROWNING 	= 1		// Infinite Air (Ween)
 local TP_XMASWATER 		= 2		// Slow and Sloshy Water, Bloopy Sounds, No Jump Abilities, Green Water Fade
@@ -10,6 +11,7 @@ local TP_SPRINGCOLLIDE 	= 32	// Touch Springs if you would've otherwise if you d
 local TP_NOSNEAKERMUSIC = 64	// No Speed Shoes Music
 local TP_CONVEYORSPEED	= 128	// Spinning on a Conveyor builds momentum
 local TP_MATCHSUPER		= 256	// Power Stones allow you to go super instead of granting Invincibility+Shoes
+local TP_OLDICEPHYSICS	= 512	// More slippery movement on ice
 
 //Recreations of early version quirks
 
@@ -138,11 +140,20 @@ addHook("MapLoad", do for p in players.iterate // Reset Thok speed when leaving 
 	end
 end end)
 
-//Restore Jump Height 
+local TP_ORIG_FRICTION = 0xE8 << (FRACBITS - 8)
+
 addHook("MobjThinker", function(m)
 	
 	local eraInfo = SRB2TP_GetEraInfo()
-	if not eraInfo.tweaks or !eraInfo.tweaks & TP_DEMOWATER then return end
+	if not (eraInfo and eraInfo.tweaks) then return end
+	
+	// Imitate old ice physics
+	if (eraInfo.tweaks & TP_OLDICEPHYSICS) and m.friction ~= TP_ORIG_FRICTION then
+		m.movefactor = FRACUNIT
+	end
+	
+	//Restore Jump Height 
+	if !eraInfo.tweaks & TP_DEMOWATER then return end
 
 	local p = m.player
 
@@ -157,7 +168,6 @@ end
 		p.jumped = true
 		end
 	end
-
 end,MT_PLAYER)
 
 
@@ -262,7 +272,7 @@ if not Valid then
 end
 
 -- These variables are not exposed to Lua, so they have been redefined here
-local TP_ORIG_FRICTION = 0xE8 << (FRACBITS - 8)
+-- local TP_ORIG_FRICTION = 0xE8 << (FRACBITS - 8) -- This is already defined earlier in the script
 local TP_CARRYFACTOR = (3*FRACUNIT)/32
 local TP_SCROLL_SHIFT = 5
 
