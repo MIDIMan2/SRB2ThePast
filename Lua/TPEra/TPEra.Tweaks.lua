@@ -1,4 +1,5 @@
--- SRB2TP - TPEra Tweaks, created by Barrels O' Fun, edited by MIDIMan
+-- SRB2TP - TPEra Tweaks
+-- Created by Barrels O' Fun, edited by MIDIMan
 
 local TP_NODROWNING 	= 1		// Infinite Air (Ween)
 local TP_XMASWATER 		= 2		// Slow and Sloshy Water, Bloopy Sounds, No Jump Abilities, Green Water Fade

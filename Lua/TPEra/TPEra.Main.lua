@@ -141,10 +141,13 @@ SRB2TP_ERA_INFO["DEFAULT"] = {
 			painsound = "sfx_spring",
 			meleestate = 0			
 		},
-
-		[MT_PITY_ORB] = {
-			spawnstate = "S_PITY1"
+		[MT_STEAM] = {
+			spawnstate = "S_STEAM1"
 		},
+
+-- 		[MT_PITY_ORB] = {
+-- 			spawnstate = "S_PITY1"
+-- 		},
 		[MT_REDFLAG] = {
 			spawnstate = "S_REDFLAG"
 		},
@@ -168,10 +171,10 @@ SRB2TP_ERA_INFO["TGF"] = {
 		[MT_FLINGRING] = {
 			spawnstate = "S_TGF_RING",
 			deathstate = "S_TGF_RING_SPARK"
-		},
-		[MT_PITY_ORB] = {
-			spawnstate = "S_TGF_PITY"
-		}
+		}--,
+-- 		[MT_PITY_ORB] = {
+-- 			spawnstate = "S_TGF_PITY"
+-- 		}
 	},
 	music = {
 		["_1UP"] = "_DM1UP",
@@ -283,7 +286,9 @@ SRB2TP_ERA_INFO["DEMO1"] = {
 
 		[MT_YELLOWDIAG] = shallowClone(SRB2TP_ERA_INFO["XMAS"].mobjs[MT_YELLOWDIAG]),
 
-
+		[MT_STEAM] = {
+			spawnstate = "S_STEAM1" -- TODO: Replace this with S_OLD_STEAM_SPAWN when I figure out to get around some hardcoded garbage...
+		},
 
 		[MT_REDRING] = {
 			spawnstate = "S_DEMO_RRNG",
@@ -343,6 +348,7 @@ SRB2TP_ERA_INFO["1.01"] = {
 		[MT_YELLOWSPRING] = shallowClone(SRB2TP_ERA_INFO["DEMO4"].mobjs[MT_YELLOWSPRING]),
 		[MT_REDSPRING] = shallowClone(SRB2TP_ERA_INFO["DEMO4"].mobjs[MT_REDSPRING]),
 		[MT_YELLOWDIAG] = shallowClone(SRB2TP_ERA_INFO["DEMO4"].mobjs[MT_YELLOWDIAG]),
+		[MT_STEAM] = shallowClone(SRB2TP_ERA_INFO["DEMO4"].mobjs[MT_STEAM]),
 
 
 		[MT_REDDIAG] = {
@@ -423,6 +429,7 @@ SRB2TP_ERA_INFO["1.09"] = {
 			painsound = "sfx_s24c",
 			meleestate = 0
 		},
+		[MT_STEAM] = SRB2TP_ERA_INFO["1.08"].mobjs[MT_STEAM],
 
 		[MT_REDFLAG] = {
 			spawnstate = "S_FD_REDFLAG"
@@ -511,7 +518,8 @@ SRB2TP_ERA_INFO["2.0"] = {
 		[MT_BLUESPRING] = SRB2TP_ERA_INFO["1.09.4"].mobjs[MT_BLUESPRING],
 		[MT_YELLOWDIAG] = SRB2TP_ERA_INFO["1.09.4"].mobjs[MT_YELLOWDIAG],
 		[MT_REDDIAG] = SRB2TP_ERA_INFO["1.09.4"].mobjs[MT_REDDIAG],
-		[MT_BLUEDIAG] = SRB2TP_ERA_INFO["1.09.4"].mobjs[MT_BLUEDIAG]
+		[MT_BLUEDIAG] = SRB2TP_ERA_INFO["1.09.4"].mobjs[MT_BLUEDIAG],
+		[MT_STEAM] = SRB2TP_ERA_INFO["1.09.4"].mobjs[MT_STEAM]
 	},
 	shields = {
 		[SH_ELEMENTAL] = SKINCOLOR_GREEN,
@@ -544,9 +552,10 @@ SRB2TP_ERA_INFO["2.1"] = {
 		[MT_YELLOWDIAG] = SRB2TP_ERA_INFO["2.0"].mobjs[MT_YELLOWDIAG],
 		[MT_REDDIAG] = SRB2TP_ERA_INFO["2.0"].mobjs[MT_REDDIAG],
 		[MT_BLUEDIAG] = SRB2TP_ERA_INFO["2.0"].mobjs[MT_BLUEDIAG],
-		[MT_PITY_ORB] = {
-			spawnstate = "S_21_PITY1"
-		}
+		[MT_STEAM] = SRB2TP_ERA_INFO["1.09.4"].mobjs[MT_STEAM]--,
+-- 		[MT_PITY_ORB] = {
+-- 			spawnstate = "S_21_PITY1"
+-- 		}
 	},
 	shields = nil,
 	ringcolors = SRB2TP_ERA_INFO["2.0"].ringcolors,

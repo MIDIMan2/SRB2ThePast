@@ -309,6 +309,7 @@ dofile("TPEra/TPEra.Tweaks.lua")
 dofile("TPEra/TPEra.Rings.lua")
 dofile("TPEra/TPEra.Springs.lua")
 dofile("TPEra/TPEra.StarPosts.lua")
+dofile("TPEra/TPEra.Misc.lua")
 
 
 

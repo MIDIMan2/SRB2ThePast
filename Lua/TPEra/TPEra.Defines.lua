@@ -79,10 +79,12 @@ freeslot(
 
 //STARPOST
 	"SPR_FDSP",
-	"S_FD_STARPOST_IDLE", "S_FD_STARPOST_SPIN", "S_FD_STARPOST_FLASH"
+	"S_FD_STARPOST_IDLE", "S_FD_STARPOST_SPIN", "S_FD_STARPOST_FLASH",
 
 
-
+//STEAM
+	"SPR_OSTM",
+	"S_OLD_STEAM_SPAWN", "S_OLD_STEAM_RESET", "S_OLD_STEAM_ANIMATE", "S_OLD_STEAM_STALL"
 
 
 
@@ -206,6 +208,14 @@ states[S_DEMO_REDFLAG] 	=	{SPR_OFLG,	A,	-1,	nil,	0,	0,	S_NULL}
 states[S_DEMO_BLUEFLAG] =	{SPR_OFLG,	B,	-1,	nil,	0,	0,	S_NULL}
 states[S_FD_REDFLAG] 	=	{SPR_OFLG,	C,	-1,	nil,	0,	0,	S_NULL}
 states[S_FD_BLUEFLAG] 	=	{SPR_OFLG,	D,	-1,	nil,	0,	0,	S_NULL}
+
+
+//STEAM
+-- TODO: Maybe make an action to spring the player upwards instead of relying on A_SetSolidSteam
+states[S_OLD_STEAM_SPAWN]	=	{SPR_OSTM,	A,				2,	A_SetSolidSteam,	0,	0,	S_OLD_STEAM_RESET}
+states[S_OLD_STEAM_RESET]	=	{SPR_OSTM,	B,				2,	A_UnsetSolidSteam,	0,	0,	S_OLD_STEAM_ANIMATE}
+states[S_OLD_STEAM_ANIMATE]	=	{SPR_OSTM,	C|FF_ANIMATE,	10,	nil,				4,	2,	S_OLD_STEAM_STALL}
+states[S_OLD_STEAM_STALL]	=	{SPR_NULL,	A,				18,	nil,				0,	0,	S_OLD_STEAM_SPAWN}
 
 /*
 ///SHIELD
