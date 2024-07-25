@@ -189,6 +189,7 @@ dofile("EggHead/LUA_EHED") // Egg Head
 // Miscellanous
 // --------------------------------
 
+dofile("old_spec_and_nights.lua") //Old Special stages and Nights stuff. Allows for more special stages.
 dofile("LUA_EMRG") // Emergency Holo-Springs
 dofile("LUA_HUBS") // Exit system
 dofile("LUA_HALO") // Pre-Final Demo water colormap emulation
@@ -310,6 +311,5 @@ dofile("TPEra/TPEra.Rings.lua")
 dofile("TPEra/TPEra.Springs.lua")
 dofile("TPEra/TPEra.StarPosts.lua")
 dofile("TPEra/TPEra.Misc.lua")
-
 
 
