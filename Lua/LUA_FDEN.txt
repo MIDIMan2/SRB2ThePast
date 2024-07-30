@@ -1,5 +1,5 @@
-// final demo Egg Slimer - modified from code Ported from 2.1.25
-// PLEASE LOAD LUA_CMMN, LUA_OJTF, LUA_ENCM, and LUA_20EN BEFORE THIS
+-- Final Demo Egg Slimer - modified from code ported from 2.1.25
+-- PLEASE LOAD LUA_CMMN, LUA_OJTF, LUA_ENCM, and LUA_20EN BEFORE THIS
 
 freeslot(
 	//sprites
@@ -28,129 +28,154 @@ freeslot(
 	"S_FDBOSSSPIGOT"
 )
 
-// Final Demo Egg Slimer
+local RB_FDEGG2_NOSPEED = 1
+local RB_FDEGG2_NOPOGO = 2
+local RB_FDEGG2_OLDBEHAVIOR = 4
 
-// Make the Final Demo Egg Slimer spawn 33 FRACUNITS off the ground if its map thing's z-position hasn't been set
-addHook("MapThingSpawn", function(mobj, mapthing)
+-- Final Demo Egg Slimer
+
+addHook("MapThingSpawn", function(mo, mthing)
+	if not (mo and mo.valid and mthing and mthing.valid) then return end
+	
+	-- Make the Final Demo Egg Slimer spawn 33 FRACUNITS off the ground if its map thing's z-position hasn't been set
 	local offset
 	
-	if mapthing.z ~= 0
-		offset = mapthing.z
+	if mthing.z ~= 0 then
+		offset = mthing.z
 	else
 		offset = 33*FRACUNIT
 	end
 	
-	if (mapthing.options & MTF_OBJECTFLIP)
-		if offset ~= 0
-			mobj.z = mobj.z - offset
+	if (mthing.options & MTF_OBJECTFLIP) then
+		if offset ~= 0 then
+			mo.z = mo.z - offset
 		else
-			mobj.z = mobj.ceilingz
+			mo.z = mo.ceilingz
 		end
 	else
-		if offset ~= 0
-			mobj.z = mobj.z + offset
+		if offset ~= 0 then
+			mo.z = mo.z + offset
 		else
-			mobj.z = mobj.floorz
+			mo.z = mo.floorz
 		end
 	end
 	
-	// Toggle the Egg Slimer's pre-1.09.4 behavior if its map thing's extra flag has been set
-	if (mapthing.options & MTF_EXTRA)
-		mobj.oldBehavior = true
+	-- Toggle the Egg Slimer's pre-1.09.4 behavior if its map thing's extra flag has been set
+	if not udmf then
+		if (mthing.options & MTF_EXTRA) then mo.rbOldBehavior = true end
+-- 		if (mthing.options & MTF_AMBUSH) then mo.flags2 = $|MF2_AMBUSH end -- This is already handled by SRB2
+	else
+		local flags = mthing.args[5] or 0
+		if (flags & RB_FDEGG2_OLDBEHAVIOR) then mo.rbOldBehavior = true end
+		if not (flags & RB_FDEGG2_NOSPEED) then mo.flags2 = $|MF2_AMBUSH end -- Stay consistent with 2.2's UDMF implementation
 	end
 end, MT_FDEGGMOBILE2)
 
-// Display the final demo Egg Slimer's "gibs" when it dies
+-- Display the Final Demo Egg Slimer's "gibs" when it dies
 addHook("BossDeath", function(mo)
+	if not (mo and mo.valid) then return end
 	A_21BossDeath(mo)
 	A_20EggSlimerGibs(mo, 0, 0)
 	return true
-end, MT_FDEGGMOBILE2)
+end, MT_20EGGMOBILE2)
 
-// Allows the Egg Slimer to move in a circular path in its first phase
+-- Allows the Egg Slimer to move in a circular path in its first phase
 addHook("MobjSpawn", function(mo)
 	mo.watertop = mo.info.speed
 	
-	// Force the Egg Slimer into its pogo state if there is no NiGHTS axis on the map
-	if not P_GetClosestAxis(mo)
-		mo.rbPogoOnly = true
-	end
+	-- Force the Egg Slimer into its pogo state if there is no NiGHTS axis on the map
+	if not P_GetClosestAxis(mo) then mo.rbPogoOnly = true end
 end, MT_FDEGGMOBILE2)
 
-// Modified BossThinker behavior for 2.0 Egg Slimer from 2.0.7
-addHook("BossThinker", function(mobj)
-	if mobj.movecount
-		mobj.movecount = $-1
-	end
+-- Ported and modified BossThinker behavior for Final Demo Egg Slimer from 1.09.4 (and 2.0.7)
+addHook("BossThinker", function(mo)
+	if not (mo and mo.valid) then return end
 	
-	if not mobj.movecount
-		mobj.flags2 = $ & ~MF2_FRET
-	end
+	if mo.movecount then mo.movecount = $-1 end
+	if not mo.movecount then mo.flags2 = $ & ~MF2_FRET end
 	
-	if not mobj.tracer
-		local eggjet = P_SpawnMobj(mobj.x, mobj.y, mobj.z + 5*FRACUNIT, MT_SLIMERFUME1)
-		eggjet.target = mobj
+	if not (mo.tracer and mo.tracer.valid) then
+		local eggjet = P_SpawnMobj(mo.x, mo.y, mo.z + 5*FRACUNIT, MT_SLIMERFUME1)
+		eggjet.target = mo
 		
-		mobj.tracer = eggjet
+		mo.tracer = eggjet
 	end
 	
-	if mobj.health <= mobj.info.damage and (not mobj.target or not (mobj.target.flags & MF_SHOOTABLE))
-		if mobj.health <= 0
-			// look for a new target
-			if P_LookForPlayers(mobj, 0, true) and mobj.info.mass // Bid farewell!
-				S_StartSound(mobj, mobj.info.mass)
+	if mo.health <= mo.info.damage and not (mo.target and mo.target.valid and (mo.target.flags & MF_SHOOTABLE)) then
+		if mo.health <= 0 then
+			-- look for a new target
+			if P_LookForPlayers(mo, 0, true) and mo.info.mass then -- Bid farewell!
+				S_StartSound(mo, mo.info.mass)
 			end
 			return
 		end
 		
-		// look for a new target
-		if P_LookForPlayers(mobj, 0, true) and mobj.info.seesound
-			S_StartSound(mobj, mobj.info.seesound)
+		-- look for a new target
+		if P_LookForPlayers(mo, 0, true) and mo.info.seesound then
+			S_StartSound(mo, mo.info.seesound)
 		end
 		
 		return
 	end
 	
-	// Kill the Egg Slimer if there is no axis and its map Thing parameter is set to 1
-	if mobj.rbPogoOnly
-		if mobj.spawnpoint 
-		and mobj.spawnpoint.type == mobj.info.doomednum 
-		and mobj.spawnpoint.extrainfo == 1
-			mobj.rbPogoOnly = false
+	-- Kill the Egg Slimer if there is no axis and its map Thing parameter is set to 1
+	if mo.rbPogoOnly then
+		if mo.spawnpoint and mo.spawnpoint.valid
+		and mo.spawnpoint.type == mo.info.doomednum 
+		and ((not udmf and mo.spawnpoint.extrainfo == 1)
+		or (udmf and (mo.spawnpoint.args[5] & RB_FDEGG2_NOPOGO))) then
+			mo.rbPogoOnly = false
 		end
 	end
 	
-	if mobj.state == mobj.info.spawnstate and mobj.health > mobj.info.damage 
-	and not mobj.rbPogoOnly
-		A_FDBoss2Chase(mobj, 0, 0)
-	elseif mobj.state == mobj.info.raisestate
-	  or mobj.state == S_FDEGGMOBILE2_POGO2
-	  or mobj.state == S_FDEGGMOBILE2_POGO3
-	  or mobj.state == S_FDEGGMOBILE2_POGO4
-	  or mobj.state == mobj.info.spawnstate
-		mobj.flags = $ & ~MF_NOGRAVITY
-		A_FDBoss2Pogo(mobj, 0, 0)
+	if mo.state == mo.info.spawnstate and mo.health > mo.info.damage 
+	and not mo.rbPogoOnly then
+		A_FDBoss2Chase(mo, 0, 0)
+	elseif mo.state == mo.info.raisestate
+	or mo.state == S_FDEGGMOBILE2_POGO2
+	or mo.state == S_FDEGGMOBILE2_POGO3
+	or mo.state == S_FDEGGMOBILE2_POGO4
+	or mo.state == mo.info.spawnstate then
+		mo.flags = $ & ~MF_NOGRAVITY
+		A_FDBoss2Pogo(mo, 0, 0)
+		if mo.health <= mo.info.damage then
+			-- UDMF support for pinch phase!
+			local pinchtag = LE_PINCHPHASE
+			if udmf and mo.spawnpoint and mo.spawnpoint.valid then pinchtag = mo.spawnpoint.args[4] end
+			P_LinedefExecute(pinchtag, mo, nil)
+		end
 	end
 	
 	return true
 end, MT_FDEGGMOBILE2)
 
-// Don't let the 2.0 Egg Slimer get hit while its movecount is greater than 0
+-- Don't let the Final Demo Egg Slimer get hit while its movecount is greater than 0
 addHook("TouchSpecial", function(special, toucher)
-	if special.movecount
-		return true
-	end
+	if not (special and special.valid and toucher and toucher.valid) then return end
+	
+	if special.movecount then return true end
 end, MT_FDEGGMOBILE2)
 
-// Final Demo Egg Slimer also reuses states from 2.1 Egg Slimer for optimization
-
 mobjinfo[MT_FDEGGMOBILE2] = {
-	//$Name Final Demo Egg Slimer
-	//$Sprite FDESA1
-	//$Category Bosses
-	//$Flags1Text Pre-1.09.4 behavior
-	//$Flags4Text End level on death
-	//$Flags8Text Speed up when hit
+	--$Name Final Demo Egg Slimer
+	--$Sprite FDESA1
+	--$Category Bosses
+	--$Flags1Text Pre-1.09.4 behavior
+	--$Flags4Text End level on death
+	--$Flags8Text Speed up when hit
+	--$Arg0 Boss ID
+	--$Arg1 End level on death?
+	--$Arg1Type 11
+	--$Arg1Enum noyes
+	--$Arg2 Death trigger tag
+	--$Arg2Type 15
+	--$Arg3 Victory trigger tag
+	--$Arg3Type 15
+	--$Arg4 Pinch trigger tag
+	--$Arg4Type 15
+	--$Arg5 Flags
+	--$Arg5Type 12
+	--$Arg5Enum {1 = "Don't speed up when hit"; 2 = "Don't pogo without axis"; 4 = "Use Pre-1.09.4 behavior";}
 	doomednum = 225,
 	spawnstate = S_FDEGGMOBILE2_STND,
 	spawnhealth = 8,
@@ -177,15 +202,26 @@ mobjinfo[MT_FDEGGMOBILE2] = {
 states[S_FDEGGMOBILE2_STND] =	{SPR_FDES,	A,	-1,	nil,	0,	0,	S_NULL}
 
 states[S_FDEGGMOBILE2_POGO1] = {SPR_FDES, B, 1,	nil, 0, 0, S_FDEGGMOBILE2_POGO2}
-// Replace A_Boss2PogoSFX with A_21Boss2PogoSFX if it gets replaced or removed
+-- Replace A_Boss2PogoSFX with A_21Boss2PogoSFX if it gets replaced or removed
 states[S_FDEGGMOBILE2_POGO2] = {SPR_FDES,	A,	1,	A_Boss2PogoSFX,	12*FRACUNIT,	5*FRACUNIT,	S_FDEGGMOBILE2_POGO3}
 states[S_FDEGGMOBILE2_POGO3] = {SPR_FDES,	B,	1,	nil, 0, 0, S_FDEGGMOBILE2_POGO4}
 states[S_FDEGGMOBILE2_POGO4] =	{SPR_FDES,	C,	-1,	nil,	0,	0,	S_NULL}
 
-// Replace A_Boss2TakeDamage with A_21Boss2TakeDamage if it changes in the future
-states[S_FDEGGMOBILE2_PAIN] =	{SPR_FDES,	D,	24,	A_Boss2TakeDamage,	24+TICRATE,	0,	S_FDEGGMOBILE2_STND}
-// Replace A_Boss2TakeDamage with A_21Boss2TakeDamage if it changes in the future
-states[S_FDEGGMOBILE2_PAIN2] =	{SPR_FDES,	D,	24,	A_Boss2TakeDamage,	24+TICRATE,	0,	S_FDEGGMOBILE2_POGO4}
+function A_FDBoss2TakeDamage(actor, var1, var2)
+	if not (actor and actor.valid) then return end
+	
+	if actor.rbOldBehavior then
+		A_Boss2TakeDamage(actor, 24, 0)
+		return
+	end
+	
+	A_Boss2TakeDamage(actor, 24+TICRATE, 0)
+end
+
+-- Replace A_Boss2TakeDamage with A_21Boss2TakeDamage if it changes in the future
+states[S_FDEGGMOBILE2_PAIN] =	{SPR_FDES,	D,	24,	A_FDBoss2TakeDamage,	0,	0,	S_FDEGGMOBILE2_STND}
+-- Replace A_Boss2TakeDamage with A_21Boss2TakeDamage if it changes in the future
+states[S_FDEGGMOBILE2_PAIN2] =	{SPR_FDES,	D,	24,	A_FDBoss2TakeDamage,	0,	0,	S_FDEGGMOBILE2_POGO4}
 
 states[S_FDEGGMOBILE2_DIE1] =	{SPR_FDES,	E,	8,	A_Fall,			0,	0,						S_FDEGGMOBILE2_DIE2}
 states[S_FDEGGMOBILE2_DIE2] =	{SPR_FDES,	E,	8,	A_BossScream,	0,	MT_BOSSEXPLODE,			S_FDEGGMOBILE2_DIE3}
@@ -194,11 +230,12 @@ states[S_FDEGGMOBILE2_DIE4] =	{SPR_FDES,	E,	-1,	A_BossDeath,	0,	0,						S_NULL}
 
 states[S_FDEGGMOBILE2_FLEE1] =	{SPR_FDES,	F,	5,	nil,	0,	0,	S_FDEGGMOBILE2_FLEE2}
 states[S_FDEGGMOBILE2_FLEE2] =	{SPR_FDES,	G,	5,	nil,	0,	0,	S_FDEGGMOBILE2_FLEE1}
-// Final Demo Egg Slimer "Gibs"
+
+-- Final Demo Egg Slimer "Gibs"
 
 mobjinfo[MT_FDBOSSJUNK] = {
 	doomednum = -1,
-	spawnstate = S_INVISIBLE, // Invisible unless its state is altered
+	spawnstate = S_INVISIBLE, -- Invisible unless its state is altered
 	spawnhealth = 1,
 	reactiontime = 8,
 	radius = 8*FRACUNIT,
@@ -220,7 +257,7 @@ states[S_FDBOSSTANK1] =		{SPR_FDEJ,	A,	35,	nil,	0,	0,	S_NULL}
 states[S_FDBOSSTANK2] =		{SPR_FDEJ,	B,	35,	nil,	0,	0,	S_NULL}
 states[S_FDBOSSSPIGOT] =	{SPR_FDEJ,	C,	35,	nil,	0,	0,	S_NULL}
 
-//MT_SLIMERFUME1 name of the fumes
+-- Final Demo Egg Slimger "Fume"
 
 addHook("MobjThinker", function(mo)
 	if not (mo and mo.valid) then return end
@@ -233,7 +270,7 @@ addHook("MobjThinker", function(mo)
 		mo.flags2 = $ & ~MF2_DONTDRAW
 	end
 	
-	if mo.target.oldBehavior and mo.target.health > mo.target.info.damage then
+	if mo.target.rbOldBehavior and mo.target.health > mo.target.info.damage then
 		P_SetOrigin(mo, mo.target.x, mo.target.y, mo.target.z + 5*FRACUNIT)
 		return
 	end

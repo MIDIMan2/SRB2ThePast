@@ -77,6 +77,8 @@ function A_FDBoss2Chase(actor, var1, var2)
 		actor.target.angle = $ + FixedMul(actor.watertop, ANG1)
 	end
 	
+	-- 1.08's code used decimal math instead of FRACUNIT math to calculate cos and sin.
+	-- However, simply moving the Egg Slimer every other frame is easier and replicates the choppy movement just as well
 	local fa = actor.target.angle
 	local fc = FixedMul(cos(fa), radius)
 	local fs = FixedMul(sin(fa), radius)
