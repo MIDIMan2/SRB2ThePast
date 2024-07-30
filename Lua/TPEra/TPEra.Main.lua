@@ -287,7 +287,7 @@ SRB2TP_ERA_INFO["DEMO1"] = {
 		[MT_YELLOWDIAG] = shallowClone(SRB2TP_ERA_INFO["XMAS"].mobjs[MT_YELLOWDIAG]),
 
 		[MT_STEAM] = {
-			spawnstate = "S_STEAM1" -- TODO: Replace this with S_OLD_STEAM_SPAWN when I figure out to get around some hardcoded garbage...
+			spawnstate = "S_OLD_STEAM_SPAWN"
 		},
 
 		[MT_REDRING] = {
