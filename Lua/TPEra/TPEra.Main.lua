@@ -144,6 +144,12 @@ SRB2TP_ERA_INFO["DEFAULT"] = {
 		[MT_STEAM] = {
 			spawnstate = "S_STEAM1"
 		},
+-- 		[MT_SPIKE] = {
+-- 			spawnstate = "S_SPIKE1",
+-- 			meleestate = "S_SPIKE4",
+-- 			deathstate = "S_SPIKED1",
+-- 			xdeathstate = "S_SPIKED2"
+-- 		},
 
 -- 		[MT_PITY_ORB] = {
 -- 			spawnstate = "S_PITY1"
@@ -349,6 +355,12 @@ SRB2TP_ERA_INFO["1.01"] = {
 		[MT_REDSPRING] = shallowClone(SRB2TP_ERA_INFO["DEMO4"].mobjs[MT_REDSPRING]),
 		[MT_YELLOWDIAG] = shallowClone(SRB2TP_ERA_INFO["DEMO4"].mobjs[MT_YELLOWDIAG]),
 		[MT_STEAM] = shallowClone(SRB2TP_ERA_INFO["DEMO4"].mobjs[MT_STEAM]),
+-- 		[MT_SPIKE] = {
+-- 			spawnstate = "S_OLD_SPIKE1",
+-- 			meleestate = "S_OLD_SPIKE4",
+-- 			deathstate = "S_OLD_SPIKED1",
+-- 			xdeathstate = "S_OLD_SPIKED2",
+-- 		},
 
 
 		[MT_REDDIAG] = {
@@ -430,6 +442,7 @@ SRB2TP_ERA_INFO["1.09"] = {
 			meleestate = 0
 		},
 		[MT_STEAM] = SRB2TP_ERA_INFO["1.08"].mobjs[MT_STEAM],
+-- 		[MT_SPIKE] = SRB2TP_ERA_INFO["1.08"].mobjs[MT_SPIKE],
 
 		[MT_REDFLAG] = {
 			spawnstate = "S_FD_REDFLAG"
@@ -519,7 +532,8 @@ SRB2TP_ERA_INFO["2.0"] = {
 		[MT_YELLOWDIAG] = SRB2TP_ERA_INFO["1.09.4"].mobjs[MT_YELLOWDIAG],
 		[MT_REDDIAG] = SRB2TP_ERA_INFO["1.09.4"].mobjs[MT_REDDIAG],
 		[MT_BLUEDIAG] = SRB2TP_ERA_INFO["1.09.4"].mobjs[MT_BLUEDIAG],
-		[MT_STEAM] = SRB2TP_ERA_INFO["1.09.4"].mobjs[MT_STEAM]
+		[MT_STEAM] = SRB2TP_ERA_INFO["1.09.4"].mobjs[MT_STEAM],
+-- 		[MT_SPIKE] = SRB2TP_ERA_INFO["1.09.4"].mobjs[MT_SPIKE]
 	},
 	shields = {
 		[SH_ELEMENTAL] = SKINCOLOR_GREEN,
@@ -552,7 +566,8 @@ SRB2TP_ERA_INFO["2.1"] = {
 		[MT_YELLOWDIAG] = SRB2TP_ERA_INFO["2.0"].mobjs[MT_YELLOWDIAG],
 		[MT_REDDIAG] = SRB2TP_ERA_INFO["2.0"].mobjs[MT_REDDIAG],
 		[MT_BLUEDIAG] = SRB2TP_ERA_INFO["2.0"].mobjs[MT_BLUEDIAG],
-		[MT_STEAM] = SRB2TP_ERA_INFO["1.09.4"].mobjs[MT_STEAM]--,
+		[MT_STEAM] = SRB2TP_ERA_INFO["2.0"].mobjs[MT_STEAM]--,
+-- 		[MT_SPIKE] = SRB2TP_ERA_INFO["2.0"].mobjs[MT_SPIKE]--,
 -- 		[MT_PITY_ORB] = {
 -- 			spawnstate = "S_21_PITY1"
 -- 		}

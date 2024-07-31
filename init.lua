@@ -216,6 +216,7 @@ dofile("LUA_LMTL") // Loser Metal Sonic
 dofile("TGF Minecart/LUA_TCRT") // TGF mine Cart
 dofile("L_CircuitExitLevelFix_V1.2.lua") //circuit hotfix
 dofile("SpecialFX/LUA_XSTP") // Special Effects for foot steps
+dofile("LUA_FSPK.lua") // Old Spike
 
 // --------------------------------
 // Bosses

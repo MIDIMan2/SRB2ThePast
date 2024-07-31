@@ -84,8 +84,12 @@ freeslot(
 
 //STEAM
 	"SPR_OSTM",
-	"S_OLD_STEAM_SPAWN", "S_OLD_STEAM_RESET", "S_OLD_STEAM_ANIMATE", "S_OLD_STEAM_STALL"
+	"S_OLD_STEAM_SPAWN", "S_OLD_STEAM_RESET", "S_OLD_STEAM_ANIMATE", "S_OLD_STEAM_STALL"--,
 
+-- //SPIKE
+-- 	"SPR_OSPK",
+-- 	"S_OLD_SPIKE1", "S_OLD_SPIKE2", "S_OLD_SPIKE3", "S_OLD_SPIKE4", "S_OLD_SPIKE5", "S_OLD_SPIKE6",
+-- 	"S_OLD_SPIKED1", "S_OLD_SPIKED2"
 
 
 
@@ -216,6 +220,19 @@ states[S_OLD_STEAM_SPAWN]	=	{SPR_OSTM,	A,				2,	A_SetSolidSteam,	0,	0,	S_OLD_STE
 states[S_OLD_STEAM_RESET]	=	{SPR_OSTM,	B,				2,	A_UnsetSolidSteam,	0,	0,	S_OLD_STEAM_ANIMATE}
 states[S_OLD_STEAM_ANIMATE]	=	{SPR_OSTM,	C|FF_ANIMATE,	10,	nil,				4,	2,	S_OLD_STEAM_STALL}
 states[S_OLD_STEAM_STALL]	=	{SPR_NULL,	A,				18,	nil,				0,	0,	S_OLD_STEAM_SPAWN}
+
+
+//SPIKE
+/*
+states[S_OLD_SPIKE1]	=	{SPR_OSPK,	A,	-1,	A_SpikeRetract,	1,	0,	S_OLD_SPIKE2}
+states[S_OLD_SPIKE2]	=	{SPR_OSPK,	F,	2,	A_Pain,			0,	0,	S_OLD_SPIKE3}
+states[S_OLD_SPIKE3]	=	{SPR_OSPK,	E,	2,	nil,			0,	0,	S_OLD_SPIKE4}
+states[S_OLD_SPIKE4]	=	{SPR_OSPK,	D,	-1,	A_SpikeRetract,	1,	0,	S_OLD_SPIKE5}
+states[S_OLD_SPIKE5]	=	{SPR_OSPK,	E,	2,	A_Pain,			0,	0,	S_OLD_SPIKE6}
+states[S_OLD_SPIKE6]	=	{SPR_OSPK,	F,	2,	nil,			0,	0,	S_OLD_SPIKE1}
+states[S_OLD_SPIKED1]	=	{SPR_OSPK,	B,	-1,	nil,			0,	0,	S_NULL}
+states[S_OLD_SPIKED2]	=	{SPR_OSPK,	C,	-1,	nil,			0,	0,	S_NULL}
+*/
 
 /*
 ///SHIELD

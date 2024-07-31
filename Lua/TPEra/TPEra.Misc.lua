@@ -2,6 +2,8 @@
 --SRB2:TP Era Skins: Miscellaneous-- // MIDIMan, based off of code from Barrels O' Fun
 ------------------------------------
 
+-- Steam
+
 local steamskins = { 
 	S_STEAM1,			// 2.2
 	S_OLD_STEAM_SPAWN	// Demo 3 - 2.1
@@ -66,3 +68,51 @@ addHook("MobjCollide", function(thing, tmthing)
 		end
 	end
 end, MT_STEAM)
+
+-- Spike
+
+--[[
+local spikeskins = { 
+	{S_SPIKE1,	S_SPIKE4},			// 2.2
+	{S_OLD_SPIKE1,	S_OLD_SPIKE4}	// 1.01 - 2.1
+}
+]]
+
+-- TODO: Might be better to make a new object for old spikes instead
+local function SpikeItemSkin(m,mt,list)
+	if not (m and m.valid and mt and mt.valid) then return end
+	
+	--[[
+	local itemskin = mt.extrainfo
+	if udmf then
+		itemskin = mt.args[1]
+	end
+
+	if m.itemskin == nil or m.itemskin == 0 then
+		m.itemskin = itemskin
+	end
+	]]
+	
+	m.itemskin = 0
+
+	if m.itemskin != 0 then
+		m.skintable = list
+		if m.state != list[min(m.itemskin,#list)][1] then
+			m.state = list[min(m.itemskin,#list)][1]
+		end
+	else
+		if leveltime == 0 then	-- Only update once at map load.
+			SRB2TP_UpdateObject(m)
+		else					-- If any are spawned after that update them.
+			SRB2TP_UpdateObject(m,true)
+		end
+		
+		m.state = mobjinfo[m.type].spawnstate
+	end
+end
+
+--[[
+addHook("MapThingSpawn", function(m,mt) 
+	SpikeItemSkin(m,mt,spikeskins)
+end, MT_SPIKE)
+]]
