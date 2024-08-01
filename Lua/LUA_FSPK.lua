@@ -122,7 +122,6 @@ addHook("MobjMoveCollide", function(tmthing, thing)
 	if not (tmthing and tmthing.valid and thing and thing.valid) then return end
 	
 	-- When solid spikes move, assume they just popped up and teleport things on top of them to hurt.
-	-- TODO: Figure out why this can hurt Fang when the spike pops up, unlike the vanilla spike
 	if (thing.flags & MF_SOLID) and (tmthing.flags & MF_SOLID) then
 		if thing.z > tmthing.z + tmthing.height
 		or thing.z + thing.height < tmthing.z then
@@ -135,7 +134,8 @@ addHook("MobjMoveCollide", function(tmthing, thing)
 			P_SetOrigin(thing, thing.x, thing.y, tmthing.z + tmthing.height + tmthing.scale)
 		end
 		if (thing.flags & MF_SHOOTABLE) then
-			P_DamageMobj(thing, tmthing, tmthing, 1, DMG_SPIKE)
+			-- inflictor and source would normally be tmthing, but due to a bug in vanilla SRB2, tmthing and thing point to the same object (the player) after calling P_SetOrigin in C
+			P_DamageMobj(thing, thing, thing, 1, DMG_SPIKE)
 		end
 		return false
 	end
@@ -222,6 +222,43 @@ addHook("MobjDeath", function(target, inflictor, _, _, _)
 	target.momz = momz
 	
 	return true
+end, MT_OLD_SPIKE)
+
+-- Two functions ported from 2.2's code since they aren't exposed to Lua
+local function CTFTEAMCODE(pl)
+	if not (pl and pl.valid) then return "" end
+	
+	return pl.ctfteam and (pl.ctfteam == 1 and "\x85" or "\x84") or ""
+end
+
+local function CTFTEAMENDCODE(pl)
+	if not (pl and pl.valid) then return "" end
+	
+	return pl.ctfteam and "\x80" or ""
+end
+
+addHook("HurtMsg", function(player, inflictor, source, _)
+	if not (player and player.valid and inflictor and inflictor.valid and source and source.valid) then return end
+	
+	local deadtarget = (player.mo.health <= 0)
+	
+	if not deadtarget and not CV_FindVar("hazardlog").value then return end
+	
+	local targetname = string.format("%s%s%s",
+		CTFTEAMCODE(player),
+		player.name,
+		CTFTEAMENDCODE(player)
+	)
+	
+	if source.type == MT_OLD_SPIKE then
+		local str = string.format("%s was %s by spikes.",
+			targetname,
+			deadtarget and "killed" or "hit"
+		)
+		
+		print(str)
+		return true
+	end
 end, MT_OLD_SPIKE)
 
 mobjinfo[MT_OLD_SPIKE] = {
