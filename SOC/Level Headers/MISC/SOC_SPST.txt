@@ -235,12 +235,13 @@ SpecialStageSpheres = 150
 SpecialStageTime = 90
 NextLevel = 2
 Lua.OldSpecial = 1
-Lua.TPHub = 2:9
+Lua.TPHub = 2:8
 
 Level SD
 Levelname = Special Stage 7
 nozone = 1
 Subtitle = Version Demo 4
+NextLevel = 2
 Music = SS7D4
 MusicInter = LCLEAR
 SkyNum = 2
@@ -250,7 +251,8 @@ hidden = 1
 palette = 1032
 SpecialStageSpheres = 100
 SpecialStageTime = 60
-Lua.TPHub = 2:14
+Lua.OldSpecial = 1
+Lua.TPHub = 2:13
 
 Level SG
 Levelname = Special Stage 3
@@ -267,7 +269,7 @@ SpecialStageSpheres = 150
 SpecialStageTime = 80
 NextLevel = 2
 Lua.OldSpecial = 1
-Lua.TPHub = 2:17
+Lua.TPHub = 2:16
 
 Level SK
 Levelname = Special Stage 7
@@ -282,7 +284,9 @@ hidden = 1
 palette = 1032
 SpecialStageSpheres = 110
 SpecialStageTime = 30
-Lua.TPHub = 2:21
+NextLevel = 2
+Lua.OldSpecial = 1
+Lua.TPHub = 2:20
 
 Level SV
 Levelname = Special Stage 4
@@ -298,7 +302,7 @@ SpecialStageSpheres = 70
 SpecialStageTime = 100
 NextLevel = 2
 Lua.OldSpecial = 1
-Lua.TPHub = 2:32
+Lua.TPHub = 2:31
 
 Level SY
 Levelname = Special Stage 7
@@ -312,7 +316,9 @@ RecordAttack = 0
 hidden = 1
 SpecialStageSpheres = 375
 SpecialStageTime = 210
-Lua.TPHub = 2:35
+NextLevel = 2
+Lua.OldSpecial = 1
+Lua.TPHub = 2:34
 
 Level V4
 Levelname = Special Stage 5
@@ -328,7 +334,7 @@ SpecialStageSpheres = 400
 SpecialStageTime = 210
 NextLevel = 2
 Lua.OldSpecial = 1
-Lua.TPHub = 2:40
+Lua.TPHub = 2:39
 
 Level V6
 Levelname = Special Stage 7
@@ -342,7 +348,9 @@ RecordAttack = 0
 hidden = 1
 SpecialStageSpheres = 100
 SpecialStageTime = 120
-Lua.TPHub = 2:42
+NextLevel = 2
+Lua.OldSpecial = 1
+Lua.TPHub = 2:41
 
 Level VC
 Levelname = Special Stage 6
@@ -358,7 +366,7 @@ SpecialStageSpheres = 100
 SpecialStageTime = 120
 NextLevel = 2
 Lua.OldSpecial = 1
-Lua.TPHub = 2:48
+Lua.TPHub = 2:47
 
 Level VD
 Levelname = Special Stage 7
@@ -372,11 +380,14 @@ RecordAttack = 0
 hidden = 1
 SpecialStageSpheres = 100
 SpecialStageTime = 90
-Lua.TPHub = 2:49
+NextLevel = 2
+Lua.OldSpecial = 1
+Lua.TPHub = 2:48
 
 Level VL
 LevelName = MP Special Stage 7
 Subtitle = Version 2.2
+NextLevel = 2
 Music = SPEC7
 TypeOfLevel = Singleplayer,Co-op
 SelectHeading = MP Special Stages
@@ -385,4 +396,5 @@ RecordAttack = 0
 hidden = 1
 SpecialStageSpheres = 100
 SpecialStageTime = 90
-Lua.TPHub = 2:57
+Lua.OldSpecial = 1
+Lua.TPHub = 2:56
